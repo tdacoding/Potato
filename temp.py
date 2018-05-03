@@ -13,5 +13,5 @@ fields = [fields_name[0]]+fields_name[5:10]+fields_name[15:17]\
 #         print(row)
 db = pd.read_csv('example.csv', encoding='cp1251')
 
-db['time'] = db[fields_name[5]]+'-'+db[fields_name[6]]
-print(db)
+#db['time'] = db[fields_name[5]].str+'-'+db[fields_name[6]].str
+print(db.loc[1:3])
