@@ -20,5 +20,5 @@ db['time'] = pd.to_datetime(db['time'], format='%Y:%m:%d:%H:%M:%S')
 db = db.set_index(pd.DatetimeIndex(db['time']))
 print(db.loc['1966-01-02 03:00:00'])
 
-db.to_csv('Sykt_temp_data_cleaned.csv', encoding='cp1251')
+#db.to_csv('Sykt_temp_data_cleaned.csv', encoding='cp1251')
 
