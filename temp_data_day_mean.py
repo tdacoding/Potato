@@ -1,32 +1,23 @@
-
-import csv
+﻿import csv
 import numpy as np
 import pandas as pd
 import datetime as dt
 
 
 db = pd.read_csv('Sykt_temp_data_cleaned.csv', encoding='cp1251')
-
-#print(db.axes[1][1:])
-print(db.head(0).columns)
-
 db = db.set_index(pd.DatetimeIndex(db['time']))
-print(db['Температура воздуха по сухому терм-ру'].mean())
-print(db.loc['1966-01-02']['Температура воздуха по сухому терм-ру'])
 
-print(db.loc['1966-01-02']['Температура воздуха по сухому терм-ру'].min())
-print(db.loc['1966-01-02']['Температура воздуха по сухому терм-ру'].max())
-print(db['Температура воздуха по сухому терм-ру'].loc['1966-01-02'].mean(axis=0))
+grouped = db.groupby(db.index.date)
+db1 = pd.DataFrame({'Intraday_mean': grouped[u'Температура воздуха по сухому терм-ру'].agg(np.mean),
+                    'Intraday_min': grouped[u'Мин.температура воздуха между сроками'].agg(np.min),
+                    'Intraday_max': grouped[u'Макс. темперура воздуха между сроками'].agg(np.max),
+                    'Precipitation': grouped[u'Сумма осадков'].agg(np.sum),
+                    'Humidity': grouped[u'Относительная влажность воздуха'].agg(np.mean),
+                    'Soil_min': grouped[u'Мин. температура пов-сти почвы между сроками'].agg(np.min),
+                    'Soil_mean': grouped[u'Температура поверхности почвы'].agg(np.mean),
+                    'Soil_max': grouped[u'Макс. температура пов-сти почвы между сроками'].agg(np.max),})
+db1 = db1.round(2)
+db1 = db1[['Intraday_min', 'Intraday_max', 'Intraday_mean', 'Soil_min', 'Soil_max', 'Soil_mean', 'Precipitation', 'Humidity']]
 
-db1 = pd.DataFrame(db.index.date).drop_duplicates()
-db1.rename(columns={0: 'time'}, inplace=True)
-db1 = db1.set_index(pd.DatetimeIndex(db1['time']))
-#db1['Температура воздуха по сухому терм-ру'] = db['Температура воздуха по сухому терм-ру'].loc[db1.index].mean(axis=0)
-#db1['new'] = db1.apply(lambda row: db['Температура воздуха по сухому терм-ру'].loc[row['time']].mean(axis=0), axis=1)
-print(db1)
-
-
-
-
-#db.to_csv('Sykt_temp_data_cleaned.csv', encoding='cp1251')
-
+# db1.to_csv('Sykt_temp_data_day_mean_exel.csv', encoding='cp1251', sep=";", decimal=",")
+db1.to_csv('Sykt_temp_data_day_mean_exel.csv', encoding='cp1251')
