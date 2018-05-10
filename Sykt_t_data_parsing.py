@@ -27,5 +27,5 @@ for line in data:
 
 d = pd.DataFrame.from_dict(db)
 d = d[fields_name]
-d.to_csv('Sykt_temp_data.csv', encoding='cp1251')
+d.to_csv('Sykt_t_data.csv', encoding='cp1251')
 print([fields_name[0]]+fields_name[5:10]+fields_name[15:17]+fields_name[18:20]+[fields_name[21]]+fields_name[24:26]+fields_name[27:29])

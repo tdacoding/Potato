@@ -4,7 +4,7 @@ import pandas as pd
 import datetime as dt
 
 
-db = pd.read_csv('Sykt_temp_data_cleaned.csv', encoding='cp1251')
+db = pd.read_csv('Sykt_t_data_cleaned.csv', encoding='cp1251')
 db = db.set_index(pd.DatetimeIndex(db['time']))
 
 grouped = db.groupby(db.index.date)
@@ -19,5 +19,5 @@ db1 = pd.DataFrame({'Intraday_mean': grouped[u'Температура возду
 db1 = db1.round(2)
 db1 = db1[['Intraday_min', 'Intraday_max', 'Intraday_mean', 'Soil_min', 'Soil_max', 'Soil_mean', 'Precipitation', 'Humidity']]
 
-# db1.to_csv('Sykt_temp_data_day_mean_exel.csv', encoding='cp1251', sep=";", decimal=",")
-db1.to_csv('Sykt_temp_data_day_mean_exel.csv', encoding='cp1251')
+#db1.to_csv('Sykt_temp_data_day_mean_exel.csv', encoding='cp1251', sep=";", decimal=",")
+db1.to_csv('Sykt_t_data_day_mean.csv', encoding='cp1251')
