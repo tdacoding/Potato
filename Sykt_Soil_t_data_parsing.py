@@ -15,17 +15,15 @@ with open('Sykt_Soil_2017_09.dat') as archive:
         db['320cm'].append(int(line[94:98].strip()))
 
 d = pd.DataFrame.from_dict(db)
-
 d = d[['time', '20cm', '40cm', '80cm', '160cm', '320cm']]
-#print(d)
-#d.to_csv('Sykt_t_data.csv', encoding='cp1251')
+
 d['time'] = pd.to_datetime(d['time'], format='%Y:%m:%d', errors='coerce')
 d = d[d['time'].notnull()]
 d = d.replace({9999: np.nan})
 d[d.select_dtypes(include=['number']).columns] /= 10
-
 d = d.set_index(pd.DatetimeIndex(d['time']))
 d = d.loc[:'2017-09-30']
-d.to_csv('Sykt_Soil_t_data_exel.csv', encoding='cp1251', sep=";", decimal=",")
-#d.to_csv('Sykt_Soil_t_data.csv', encoding='cp1251')
+d = d[['20cm', '40cm', '80cm', '160cm', '320cm']]
+#d.to_csv('Sykt_Soil_t_data_exel.csv', encoding='cp1251', sep=";", decimal=",")
+d.to_csv('Sykt_Soil_t_data.csv', encoding='cp1251')
 
