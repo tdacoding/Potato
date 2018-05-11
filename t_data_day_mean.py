@@ -16,9 +16,18 @@ db1 = pd.DataFrame({'Intraday_mean': grouped[u'Температура возду
                     'Soil_min': grouped[u'Мин. температура пов-сти почвы между сроками'].agg(np.min),
                     'Soil_mean': grouped[u'Температура поверхности почвы'].agg(np.mean),
                     'Soil_max': grouped[u'Макс. температура пов-сти почвы между сроками'].agg(np.max),})
+db1['time'] = pd.to_datetime(db1.index, format='%Y-%m-%d')
+db1 = db1.set_index(pd.DatetimeIndex(db1['time']))
 db1 = db1.round(2)
-db1 = db1[['Intraday_min', 'Intraday_max', 'Intraday_mean', 'Soil_min', 'Soil_max', 'Soil_mean', 'Precipitation', 'Humidity']]
+db1 = db1[['time', 'Intraday_min', 'Intraday_max', 'Intraday_mean', 'Soil_min', 'Soil_max', 'Soil_mean', 'Precipitation', 'Humidity']]
 
-#db1.to_csv('Sykt_t_data_day_mean_exel.csv', encoding='cp1251', sep=";", decimal=",")
+db2 = pd.DataFrame({'time': pd.date_range('1981-11-01', '1981-11-30', freq='d'), 'Intraday_mean': np.nan, 'Intraday_max': np.nan, 'Intraday_mean': np.nan, 'Soil_min': np.nan, 'Soil_max': np.nan, 'Soil_mean': np.nan, 'Precipitation': np.nan, 'Humidity': np.nan})
+db2 = db2.set_index(pd.DatetimeIndex(db2['time']))
 
+
+db1 = db1.append(db2)
+
+db1 = db1.sort_values('time')
+del db1['time']
 db1.to_csv('Sykt_t_data_day_mean.csv', encoding='cp1251')
+#db1.to_csv('Sykt_t_data_day_mean_exel.csv', encoding='cp1251', sep=";", decimal=",")
