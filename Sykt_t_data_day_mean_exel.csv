@@ -1,4 +1,4 @@
-time;Humidity;Intraday_max;Intraday_mean;Intraday_min;Precipitation;Soil_max;Soil_mean;Soil_min
+date;Humidity;Intraday_max;Intraday_mean;Intraday_min;Precipitation;Soil_max;Soil_mean;Soil_min
 1967-01-01;63,71;;-14,1;;0,0;;-15,29;
 1967-01-02;76,25;;-20,56;;0,0;;-22,25;
 1967-01-03;77,38;;-20,81;;0,0;;-24,38;
