@@ -23,3 +23,7 @@ print('min:', var.min())
 var.hist(bins='auto', density=1, alpha=0.6, color='r',edgecolor="b")
 #var.plot()
 plt.show()
+var = db['Intraday_mean'].loc[(db.index.month == 6) | (db.index.month == 7) | (db.index.month == 8)]
+print('mean:', var.mean())
+print('max:', var.max())
+print('min:', var.min())
