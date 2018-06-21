@@ -18,8 +18,9 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-begin_date = '2016-7-10'
-end_date = '2016-8-26'
+
+begin_date = pd.to_datetime('25.5.2016', format='%d.%m.%Y')
+end_date = pd.to_datetime('14.6.2016', format='%d.%m.%Y')
 db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= 10)]
 
 temp_sum = db_select['Intraday_mean'].sum()
@@ -30,5 +31,15 @@ K_sel = precip_sum*10/temp_sum
 print('Коэффицент Селянинова за период:', K_sel)
 
 db_select = db[['Intraday_mean', 'Soil_mean', '20cm']].loc[(db.index >= begin_date) & (db.index <= end_date)]
-print(db_select)
+print('Средняя температура за период:', db_select['Intraday_mean'].mean())
+print('Средняя температура поверхности почвы за период:', db_select['Soil_mean'].mean())
+print('Средняя температура почвы на глубине 20см за период:', db_select['20cm'].mean())
 
+db_select = db[['Intraday_mean', 'Soil_mean', '20cm','Precipitation']].loc[((db.index.month > begin_date.month) & (db.index.month < end_date.month)) | (db.index.month == begin_date.month) & (db.index.day >= begin_date.day) | (db.index.month == end_date.month) & (db.index.day <= end_date.day)]
+var1 = db_select['Intraday_mean']
+var2 = db_select['Precipitation']
+print(var1.mean())
+var1.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
+print(var2.mean())
+var2.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
+plt.show()
