@@ -19,8 +19,8 @@ print(db.head(0))
 # var.plot()
 # plt.show()
 
-begin_date = pd.to_datetime('25.5.2016', format='%d.%m.%Y')
-end_date = pd.to_datetime('14.6.2016', format='%d.%m.%Y')
+begin_date = pd.to_datetime('10.07.2016', format='%d.%m.%Y')
+end_date = pd.to_datetime('26.07.2016', format='%d.%m.%Y')
 db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= 10)]
 
 temp_sum = db_select['Intraday_mean'].sum()
@@ -35,11 +35,20 @@ print('Средняя температура за период:', db_select['Int
 print('Средняя температура поверхности почвы за период:', db_select['Soil_mean'].mean())
 print('Средняя температура почвы на глубине 20см за период:', db_select['20cm'].mean())
 
-db_select = db[['Intraday_mean', 'Soil_mean', '20cm','Precipitation']].loc[((db.index.month > begin_date.month) & (db.index.month < end_date.month)) | (db.index.month == begin_date.month) & (db.index.day >= begin_date.day) | (db.index.month == end_date.month) & (db.index.day <= end_date.day)]
-var1 = db_select['Intraday_mean']
-var2 = db_select['Precipitation']
-print(var1.mean())
-var1.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
-print(var2.mean())
-var2.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
-plt.show()
+# db_select = db[['Intraday_mean', 'Soil_mean', '20cm','Precipitation']].loc[((db.index.month > begin_date.month) & (db.index.month < end_date.month)) | (db.index.month == begin_date.month) & (db.index.day >= begin_date.day) | (db.index.month == end_date.month) & (db.index.day <= end_date.day)]
+
+# db_select_KS = db_select[['Intraday_mean', 'Precipitation']].loc[db['Intraday_mean'] >= 10]
+# temp_sum_hist = db_select_KS['Intraday_mean'].sum()
+# print('Сумма среднесуточных температур выше 10 градусов за период за историю:', temp_sum_hist)
+# precip_sum_hist = db_select_KS['Precipitation'].sum()
+# print('Сумма осадков при температуре выше 10 градусов за период за историю:', precip_sum_hist)
+# K_sel = precip_sum_hist*10/temp_sum_hist
+# print('Коэффицент Селянинова за период:', K_sel)
+
+# var1 = db_select['Intraday_mean']
+# var2 = db_select['Precipitation']
+# print(var1.mean())
+# var1.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
+# print(var2.mean())
+# var2.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
+# plt.show()
