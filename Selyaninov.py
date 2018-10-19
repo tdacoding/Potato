@@ -18,18 +18,18 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-b_date = '23.05.2016'
-e_date = '13.06.2016'
+b_date = '24.06.2015'
+e_date = '27.06.2015'
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
 end_date = pd.to_datetime(e_date, format='%d.%m.%Y')
-# db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= 10)]
+db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= 10)]
 #
-# temp_sum = db_select['Intraday_mean'].sum()
-# print('Сумма среднесуточных температур выше 10 градусов за период:', temp_sum)
-# precip_sum = db_select['Precipitation'].sum()
-# print('Сумма осадков при температуре выше 10 градусов за период:', precip_sum)
-# K_sel = precip_sum*10/temp_sum
-# print('Коэффицент Селянинова за период:', K_sel)
+temp_sum = db_select['Intraday_mean'].sum()
+print('Сумма среднесуточных температур выше 10 градусов за период:', temp_sum)
+precip_sum = db_select['Precipitation'].sum()
+print('Сумма осадков при температуре выше 10 градусов за период:', precip_sum)
+K_sel = precip_sum*10/temp_sum
+print('Коэффицент Селянинова за период:', K_sel)
 #
 # db_select = db[['Intraday_mean', 'Soil_mean', '20cm']].loc[(db.index >= begin_date) & (db.index <= end_date)]
 # print('Средняя температура за период:', db_select['Intraday_mean'].mean())
@@ -59,7 +59,7 @@ db3['sel'] = ad['sum']
 
 var1 = db3['sel']
 # var2 = db_select['Precipitation']
-print('ГКС 2016',var1[2016])
+print('ГКС 2016',var1[2015])
 print('Среднее',var1.mean())
 print('Квантиль 0,25',var1.quantile(.25))
 print('Квантиль 0,75',var1.quantile(.75))
@@ -70,8 +70,8 @@ title = "Гистограмма распределения гидротерми�
 plt.text(0.11,35,r'$\mathrm{S}^2_U=\overline{U^2}-{\overline{U}}^2$', fontsize=20)
 plt.axvline(x=var1.quantile(.25),color='r')
 plt.axvline(x=var1.quantile(.75),color='r')
-plt.axvline(x=var1[2016],color='darkblue')
-plt.xticks([var1.quantile(.25),var1[2016],var1.quantile(.75),round(var1.max())],['\n' + '{:.2f}'.format(var1.quantile(.25)) + '\n 25%','{:.2f}'.format(var1[2016]), '\n' + '{:.2f}'.format(var1.quantile(.75)) + '\n 75%',round(var1.max())])
+plt.axvline(x=var1[2015],color='darkblue')
+plt.xticks([var1.quantile(.25),var1[2015],var1.quantile(.75),round(var1.max())],['\n' + '{:.2f}'.format(var1.quantile(.25)) + '\n 25%','{:.2f}'.format(var1[2015]), '\n' + '{:.2f}'.format(var1.quantile(.75)) + '\n 75%',round(var1.max())])
 
 
 plt.title(title)
