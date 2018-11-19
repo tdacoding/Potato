@@ -18,9 +18,9 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-b_date = '21.08.2018'
-e_date = '31.08.2018'
-temperature = -50
+b_date = '26.07.2014'
+e_date = '21.08.2014'
+temperature = 10
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
 end_date = pd.to_datetime(e_date, format='%d.%m.%Y')
 db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= temperature)]
@@ -77,20 +77,23 @@ print('Квантиль 0,75', var1.quantile(.75))
 print('Медиана', var1.median())
 
 
-counts, bins, patches  = plt.hist(var1, bins='auto', density=1, alpha=0.6, color='gray', edgecolor="black")
+counts, bins, patches  = plt.hist(var1, bins='auto', density=0, alpha=0.6, color='gray', edgecolor="black")
 title = "Гистограмма распределения гидротермического коэффициента Селянинова с 1967 по 2018 гг.\n" + r"период %s - %s (фаза формирования урожая сортообразца 1603-7 в %s г.)" % (begin_date.strftime("%d.%m"), end_date.strftime("%d.%m"), begin_date.year)
 #plt.text(0.4, 0, r'$\mathrm{S}^2_U=\overline{U^2}-{\overline{U}}^2$', fontsize=20)
-plt.axvline(linewidth=2.5, x=var1.quantile(.25), color='r')
-plt.axvline(linewidth=2.5, x=var1.quantile(.75), color='r')
-plt.axvline(linewidth=2.5, x=var1[begin_date.year], color='black')
-plt.grid(axis = 'y', color='black', linewidth=0.7)
+plt.axvline(linewidth=2.0, x=var1.quantile(.25), color='r')
+plt.axvline(linewidth=2.0, x=var1.quantile(.75), color='r')
+plt.axvline(linewidth=2.0, x=var1[begin_date.year], color='black')
+plt.grid(axis = 'y', color='black', linewidth=0)
 bins1 = np.append(bins, np.array([var1.quantile(.25), var1[begin_date.year], var1.quantile(.75)]))
-bins2 = np.append(bins.round(2), np.array(['\n\n\n' + '{:.2f}'.format(var1.quantile(.25)) + '\n 25%-квантиль', '\n' + '{:.2f}'.format(var1[begin_date.year]) + '\n ГТК за '+'{:.0f}'.format(begin_date.year) + ' г.', '\n\n\n' + '{:.2f}'.format(var1.quantile(.75)) + '\n 75%-квантиль']))
-plt.xticks(bins1, bins2)
-
-
-plt.title(title)
-#plt.show()
+bins2 = np.append(bins.round(2), np.array(['\n\n\n' + r'$q_1$=' + '{:.2f}'.format(var1.quantile(.25)), '\n' + '{:.2f}'.format(var1[begin_date.year]) + '\n ГТК за '+'{:.0f}'.format(begin_date.year) + ' г.', '\n\n\n' + r'$q_3$=' + '{:.2f}'.format(var1.quantile(.75))]))
+plt.xticks(bins1, bins2, fontsize=12)
+plt.yticks(np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), fontsize=12)
+for i in range(counts.size):
+    plt.text((bins[i + 1] + bins[i])/2, counts[i] + 0.2, str(int(counts[i])), fontsize=12)
+plt.ylim((0, 20))
+plt.xlim((0, 4.25))
+plt.title(title, fontsize=12)
+plt.show()
 plt.plot(var1)
 #plt.show()
 
