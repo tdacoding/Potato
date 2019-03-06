@@ -18,8 +18,8 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-b_date = '26.07.2014'
-e_date = '21.08.2014'
+b_date = '31.07.2018'
+e_date = '30.08.2018'
 temperature = 10
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
 end_date = pd.to_datetime(e_date, format='%d.%m.%Y')
@@ -60,12 +60,14 @@ db3['sel'] = ad['sum']
 # print('Сумма осадков при температуре выше 10 градусов за период за историю:', precip_sum_hist)
 # K_sel = precip_sum_hist*10/temp_sum_hist
 # print('Коэффицент Селянинова за период:', K_sel)
-mean_temp_sum = db3['Intraday_mean']/11
-precipitation = db3['Precipitation']
-print('средняя температура в декаде', begin_date.strftime('%d.%m.%Y'), '-', end_date.strftime('%d.%m.%Y'), ':', round(mean_temp_sum['sum'][begin_date.year], 1))
-print('сумма осадков', begin_date.strftime('%d.%m.%Y'), '-', end_date.strftime('%d.%m.%Y'), ':', round(precipitation['sum'][begin_date.year], 1), '\n')
-print('средняя температура 1967-2018', round(mean_temp_sum['sum'].mean(), 1))
-print('средняя сумма осадков 1967-2018', round(precipitation['sum'].mean(), 1), '\n')
+
+## для расчета по декадам
+# mean_temp_sum = db3['Intraday_mean']/11
+# precipitation = db3['Precipitation']
+# print('средняя температура в декаде', begin_date.strftime('%d.%m.%Y'), '-', end_date.strftime('%d.%m.%Y'), ':', round(mean_temp_sum['sum'][begin_date.year], 1))
+# print('сумма осадков', begin_date.strftime('%d.%m.%Y'), '-', end_date.strftime('%d.%m.%Y'), ':', round(precipitation['sum'][begin_date.year], 1), '\n')
+# print('средняя температура 1967-2018', round(mean_temp_sum['sum'].mean(), 1))
+# print('средняя сумма осадков 1967-2018', round(precipitation['sum'].mean(), 1), '\n')
 
 var1 = db3['sel']
 #print(var1)

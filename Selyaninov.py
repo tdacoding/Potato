@@ -18,8 +18,8 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-b_date = '24.06.2015'
-e_date = '27.06.2015'
+b_date = '23.05.2016'
+e_date = '19.06.2016'
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
 end_date = pd.to_datetime(e_date, format='%d.%m.%Y')
 db_select = db[['Intraday_mean', 'Precipitation']].loc[(db.index >= begin_date) & (db.index <= end_date) & (db['Intraday_mean'] >= 10)]
@@ -59,7 +59,7 @@ db3['sel'] = ad['sum']
 
 var1 = db3['sel']
 # var2 = db_select['Precipitation']
-print('ГКС 2016',var1[2015])
+print('ГКС 2016',var1[2016])
 print('Среднее',var1.mean())
 print('Квантиль 0,25',var1.quantile(.25))
 print('Квантиль 0,75',var1.quantile(.75))

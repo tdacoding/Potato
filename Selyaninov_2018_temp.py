@@ -100,4 +100,3 @@ plt.ylim((0, 20))
 plt.xlim((0, 4.25))
 plt.title(title, fontsize=12)
 plt.show()
-
