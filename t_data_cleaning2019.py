@@ -7,10 +7,10 @@ import datetime as dt
 with open('Sykt_t_data_2019.csv', encoding='cp1251') as csvfile:
     spamreader = csv.reader(csvfile)
     fields_name = spamreader.__next__()[1:]
-fields = [*fields_name[5:10],*fields_name[15:17],*fields_name[18:20],fields_name[21],*fields_name[24:26],*fields_name[27:29]]
+
+fields = [*fields_name[5:9],*fields_name[10:11],*fields_name[28:30],*fields_name[31:33],*fields_name[34:35],*fields_name[37:39],*fields_name[41:42],*fields_name[43:44]]
 print(repr(fields))
-#     for row in spamreader:
-#         print(row)
+
 db = pd.read_csv('Sykt_t_data_2019.csv', encoding='cp1251')
 db = db[fields]
 print(db.loc[0])

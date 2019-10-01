@@ -18,8 +18,8 @@ print(db.head(0))
 
 # var.plot()
 # plt.show()
-b_date = '29.05.2018'
-e_date = '30.08.2018'
+b_date = '26.07.2014'
+e_date = '21.08.2014'
 temperature = 10
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
 end_date = pd.to_datetime(e_date, format='%d.%m.%Y')
