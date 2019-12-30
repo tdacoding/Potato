@@ -1,4 +1,5 @@
 import math
+import operator
 
 inp = open('input.txt', 'r')
 A = list(map(float, inp.readline().strip().split()))
@@ -8,8 +9,13 @@ B = list(map(float, inp.readline().strip().split()))
 C = list(map(float, inp.readline().strip().split()))
 
 D = list(map(float, inp.readline().strip().split()))
-faces
+faces = [];
+pq = list(map(operator.sub, A, B))
+pr = list(map(operator.sub, C, B))
+n = [pq[1]*pr[2] - pq[2]*pr[1], pq[0]*pr[2] - pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
+faces.append({'p':B, 'pq':pq, 'pr':pr, 'n':n})
 
+print(faces)
 rayDirection = list(map(float, inp.readline().strip().split()))
 
 rayPoint = list(map(float, inp.readline().strip().split()))
@@ -21,11 +27,13 @@ for k in range(numOfMirrors):
     p = list(map(float, inp.readline().strip().split()))
     q = list(map(float, inp.readline().strip().split()))
     r = list(map(float, inp.readline().strip().split()))
+    pq = list(map(operator.sub, q, p))
+    pr = list(map(operator.sub, r, p))
     n = [0, 0, 0]
-    mirrors.append({'p':p, 'q':q, 'r':r, 'n':n})
-    mirrors[k]['n'][0] = mirrors[k]['p'][1]*mirrors[k]['q'][2] - mirrors[k]['p'][2]*mirrors[k]['q'][1]
-    mirrors[k]['n'][1] = mirrors[k]['p'][0] * mirrors[k]['q'][2] - mirrors[k]['p'][2] * mirrors[k]['q'][0]
-    mirrors[k]['n'][2] = mirrors[k]['p'][0] * mirrors[k]['q'][1] - mirrors[k]['p'][1] * mirrors[k]['q'][0]
+    mirrors.append({'p':p, 'pq':pq, 'pr':pr, 'n':n})
+    mirrors[k]['n'][0] = mirrors[k]['pq'][1]*mirrors[k]['pr'][2] - mirrors[k]['pq'][2]*mirrors[k]['pr'][1]
+    mirrors[k]['n'][1] = mirrors[k]['pq'][0] * mirrors[k]['pr'][2] - mirrors[k]['pq'][2] * mirrors[k]['pr'][0]
+    mirrors[k]['n'][2] = mirrors[k]['pq'][0] * mirrors[k]['pr'][1] - mirrors[k]['pq'][1] * mirrors[k]['pr'][0]
 inp.close()
 print(mirrors)
 
