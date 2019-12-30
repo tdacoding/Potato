@@ -10,7 +10,8 @@ db = db.set_index(pd.DatetimeIndex(db['date']))
 print(db.head(0))
 # var = db['Soil_mean'].loc[(db.index.month == 1) | (db.index.month == 2) | (db.index.month == 12)]
 # print(var.mean())
-# var.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")
+# var.hist(bins='auto', density=1, alpha=0.6, color='g',edgecolor="b")07957376
+
 var = db['Soil_mean'].loc[(db.index.month == 6) | (db.index.month == 7) | (db.index.month == 8)]
 print('mean:', var.mean())
 print('max:', var.max())
