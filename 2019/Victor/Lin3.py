@@ -7,36 +7,41 @@ def area(pq, pr):
 
 def rayInMirror(rayPoint, rayDirection, mirror):
     global point
-    d = sum(map(operator.mul, rayDirection, mirror['n']))
-    if (d == 0): return 0
-    t = sum(map(operator.mul, list(map(operator.sub, mirror['p'], rayPoint)), mirror['n']))/d
-    if (t < 0): return 0
+    d = round(sum(map(operator.mul, rayDirection, mirror['n'])), 3)
+    if (d == 0): return False
+    t = round(sum(map(operator.mul, list(map(operator.sub, mirror['p'], rayPoint)), mirror['n']))/d, 3)
+    if (t <= 0): return False
     poinIntersect = list(map(operator.add, rayPoint, list(map(operator.mul, rayDirection, [t, t, t]))))
     point = poinIntersect.copy()
     s1 = area(list(map(operator.sub, poinIntersect, mirror['p'])), mirror['pq'])
     s2 = area(list(map(operator.sub, poinIntersect, mirror['p'])), mirror['pr'])
     s3 = area(list(map(operator.sub, mirror['pq'], list(map(operator.sub, poinIntersect, mirror['p'])))), list(map(operator.sub, mirror['pr'], list(map(operator.sub, poinIntersect, mirror['p'])))))
-    if (s1+s2+s3 == mirror['s']):
-        dist = pow(poinIntersect[0] - rayPoint[0], 2) + pow(poinIntersect[1] - rayPoint[1], 2) + pow(poinIntersect[2] - rayPoint[2], 2)
+    if (round(s1+s2+s3, 3) == mirror['s']):
+        dist = round(pow(poinIntersect[0] - rayPoint[0], 2) + pow(poinIntersect[1] - rayPoint[1], 2) + pow(poinIntersect[2] - rayPoint[2], 2), 3)
         return dist
-    else: return 0
+    else: return False
 
 def rayInFace(rayPoint, rayDirection, face):
     global point
-    d = sum(map(operator.mul, rayDirection, face['n']))
-    if (d == 0): return 0
-    t = sum(map(operator.mul, list(map(operator.sub, face['p'], rayPoint)), face['n']))/d
-    if (t < 0): return 0
-    poinIntersect = list(map(operator.add, rayPoint, list(map(operator.mul, rayDirection, [t, t, t]))))
+    d = round(sum(map(operator.mul, rayDirection, face['n'])), 3)
+    if (d != 0):
+        t = round(sum(map(operator.mul, list(map(operator.sub, face['p'], rayPoint)), face['n']))/d, 3)
+        if (t < 0): return False
+        if (t == 0) & (sum(map(operator.mul, rayDirection, face['n'])) > 0):
+            point = rayPoint.copy()
+            return 0
+        poinIntersect = list(map(operator.add, rayPoint, list(map(operator.mul, rayDirection, [t, t, t]))))
+    else:
+        return False
     point = poinIntersect.copy()
-    scal1 = sum(map(operator.mul, list(map(operator.sub, poinIntersect, face['p'])), face['pq']))
-    scal2 = sum(map(operator.mul, face['pq'], face['pq']))
-    scal3 = sum(map(operator.mul, list(map(operator.sub, poinIntersect, face['p'])), face['pr']))
-    scal4 = sum(map(operator.mul, face['pr'], face['pr']))
-    if ((0 < scal1 < scal2) & (0 < scal3 < scal4)):
-        dist = pow(poinIntersect[0] - rayPoint[0], 2) + pow(poinIntersect[1] - rayPoint[1], 2) + pow(poinIntersect[2] - rayPoint[2], 2)
+    scal1 = round(sum(map(operator.mul, list(map(operator.sub, poinIntersect, face['p'])), face['pq'])), 3)
+    scal2 = round(sum(map(operator.mul, face['pq'], face['pq'])), 3)
+    scal3 = round(sum(map(operator.mul, list(map(operator.sub, poinIntersect, face['p'])), face['pr'])), 3)
+    scal4 = round(sum(map(operator.mul, face['pr'], face['pr'])), 3)
+    if ((0 <= scal1 <= scal2) & (0 <= scal3 <= scal4)) & (sum(map(operator.mul, rayDirection, face['n'])) > 0):
+        dist = round(pow(poinIntersect[0] - rayPoint[0], 2) + pow(poinIntersect[1] - rayPoint[1], 2) + pow(poinIntersect[2] - rayPoint[2], 2), 3)
         return dist
-    else: return 0
+    else: return False
 
 inp = open('input.txt', 'r')
 A = list(map(float, inp.readline().strip().split()))
@@ -50,26 +55,28 @@ pr = list(map(operator.sub, C, B))
 n = [pq[1]*pr[2] - pq[2]*pr[1], - pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':B, 'pq':pq, 'pr':pr, 'n':n}) #грань 1
 
-pr = pq
-pq = list(map(operator.sub, B, C))
+pr = list(map(operator.sub, B, C))
+n = [pq[1]*pr[2] - pq[2]*pr[1], - pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':D, 'pq':pq, 'pr':pr, 'n':n}) #грань 2
 
-pq = list(map(operator.sub, B, C))
-pr = list(map(operator.sub, D, C))
+pr = list(map(operator.sub, B, C))
+pq = list(map(operator.sub, D, C))
 n = [pq[1]*pr[2] - pq[2]*pr[1], -pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':C, 'pq':pq, 'pr':pr, 'n':n}) #грань 3
 
-pr = pr
-pq = list(map(operator.sub, C, B))
+pr = pq
+pr = list(map(operator.sub, C, B))
+n = [pq[1]*pr[2] - pq[2]*pr[1], - pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':A, 'pq':pq, 'pr':pr, 'n':n}) #грань 4
 
-pr = pr
-pq = list(map(operator.sub, A, B))
+pr = pq
+pr = list(map(operator.sub, A, B))
 n = [pq[1]*pr[2] - pq[2]*pr[1], -pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':B, 'pq':pq, 'pr':pr, 'n':n}) #грань 5
 
-pq = pr
-pr = list(map(operator.sub, A, B))
+pr = pq
+pq = list(map(operator.sub, A, B))
+n = [pq[1]*pr[2] - pq[2]*pr[1], - pq[0]*pr[2] + pq[2]*pr[0], pq[0]*pr[1] - pq[1]*pr[0]]
 faces.append({'p':C, 'pq':pq, 'pr':pr, 'n':n}) #грань 6
 
 
@@ -91,7 +98,7 @@ for k in range(numOfMirrors): #заполняем словарь зеркал
     mirrors[k]['n'][0] = mirrors[k]['pq'][1] * mirrors[k]['pr'][2] - mirrors[k]['pq'][2] * mirrors[k]['pr'][1]
     mirrors[k]['n'][1] = -mirrors[k]['pq'][0] * mirrors[k]['pr'][2] + mirrors[k]['pq'][2] * mirrors[k]['pr'][0]
     mirrors[k]['n'][2] = mirrors[k]['pq'][0] * mirrors[k]['pr'][1] - mirrors[k]['pq'][1] * mirrors[k]['pr'][0]
-    mirrors[k]['s'] = (math.sqrt(pow(mirrors[k]['n'][0], 2) + pow(mirrors[k]['n'][1], 2) + pow(mirrors[k]['n'][2], 2))) / 2
+    mirrors[k]['s'] = round((math.sqrt(pow(mirrors[k]['n'][0], 2) + pow(mirrors[k]['n'][1], 2) + pow(mirrors[k]['n'][2], 2))) / 2, 3)
 inp.close()
 
 point = []
@@ -101,11 +108,10 @@ while (energy > 0):
     flagMirror = 0
     for k in range(numOfMirrors): #считаем расстояние до зеркал
         d = rayInMirror(rayPoint, rayDirection, mirrors[k])
-        if (d > 0):
+        if (d is not False):
             flagMirror = 1 #на траектории есть зеркало
             dists.update({k:d})
             points.update({k:point})
-
     if (flagMirror == 1):
         nearMirrorNum = min(dists.items(), key=operator.itemgetter(1))[0] #из всез зеркал на траектории выбираем ближайшее, тут его номер
         nearMirrorDist = dists[nearMirrorNum] # тут расстояние до него
@@ -114,7 +120,7 @@ while (energy > 0):
     pointFaces = {}
     for k in range(6): #считаем расстояние до граней на траектории
         d = rayInFace(rayPoint, rayDirection, faces[k])
-        if (d > 0):
+        if (d is not False):
             distFaces.update({k:d})
             pointFaces.update({k: point})
 
@@ -131,9 +137,8 @@ while (energy > 0):
     energy -= 1
     rayPoint = points[nearMirrorNum]
     n = mirrors[nearMirrorNum]['n']
-    scal = 2*sum(map(operator.mul, rayDirection, n))/(pow(n[0], 2) + pow(n[1], 2) + pow(n[2], 2)) #вычисляем отраженное направление
+    scal = round(2*sum(map(operator.mul, rayDirection, n))/(pow(n[0], 2) + pow(n[1], 2) + pow(n[2], 2)), 3) #вычисляем отраженное направление
     rayDirection = list(map(operator.sub, rayDirection, list(map(operator.mul, n, [scal, scal, scal]))))
-
 
 out = open('output.txt', 'w')
 if (energy == 0):
