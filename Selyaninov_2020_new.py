@@ -12,7 +12,7 @@ print(db.head(0))
 
 b_date = '01.05.2020'
 e_date = '20.09.2020'
-inter_year = 2016
+inter_year = 2020
 temperature = 10
 
 begin_date = pd.to_datetime(b_date, format='%d.%m.%Y')
@@ -62,7 +62,7 @@ plt.axvline(linewidth=2.5, x=var1.quantile(.75), color='r')
 plt.axvline(linewidth=2.5, x=var1[inter_year], color='blue')
 plt.grid(axis = 'y', color='black', linewidth=0)
 bins1 = np.append(bins, np.array([var1.quantile(.25), var1[inter_year], var1.quantile(.75)]))
-bins2 = np.append(bins.round(2), np.array(['\n\n\n' + r'$q_1$=' + '{:.2f}'.format(var1.quantile(.25)), '\n' + '{:.2f}'.format(var1[begin_date.year]) + '\n ГТК за '+'{:.0f}'.format(inter_year) + ' г.', '\n\n\n' + r'$q_3$=' + '{:.2f}'.format(var1.quantile(.75))]))
+bins2 = np.append(bins.round(2), np.array(['\n\n\n' + r'$q_1$=' + '{:.2f}'.format(var1.quantile(.25)), '\n' + '{:.2f}'.format(var1[inter_year]) + '\n ГТК за '+'{:.0f}'.format(inter_year) + ' г.', '\n\n\n' + r'$q_3$=' + '{:.2f}'.format(var1.quantile(.75))]))
 plt.xticks(bins1, bins2, fontsize=12)
 plt.yticks(np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), fontsize=12)
 for i in range(counts.size):
