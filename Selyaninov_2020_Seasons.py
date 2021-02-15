@@ -25,6 +25,7 @@ db1_select = db_select.loc[db_select['Intraday_mean'] >= temp1]
 # print(db1_select.loc[db1_select.index == db1_select.index.min()])
 # print(db1_select.index.min())
 spring_begin = db1_select.index.min()
+
 # print(db1_select.loc[db1_select.index == db1_select.index.max()])
 autumn_end = db1_select.index.max()
 # print(db1_select.index.max())
@@ -33,15 +34,8 @@ spring_end = db1_select.index.min()
 autumn_begin = db1_select.index.max()
 print('Весна', spring_begin, '-', spring_end)
 print('Осень', autumn_begin, '-', autumn_end)
-#
-# db_select = db[['Intraday_mean', 'Precipitation']].loc[
-#     ((db.index.month > begin_date.month) & (db.index.month < end_date.month)) | (
-#                 (begin_date.month < end_date.month) & (
-#                     ((db.index.month == begin_date.month) & (db.index.day >= begin_date.day)) | (
-#                         (db.index.month == end_date.month) & (db.index.day <= end_date.day)))) | (
-#                 (begin_date.month == end_date.month) & (db.index.month == end_date.month) & (
-#                     db.index.day >= begin_date.day) & (db.index.day <= end_date.day))]
-# db['date1'] = db.index
+
+
 db2 = db[['Intraday_mean', 'Precipitation', 'date']].loc[db['Intraday_mean'] >= temp1]
 db1 = db2.groupby(db2.index.year).agg(['min'])['date']['min']
 db1['spr_b'] = db2.groupby(db2.index.year).agg(['min'])['date']['min']
@@ -55,9 +49,9 @@ db3 = db1[['spr_b', 'spr_e', 'aut_b', 'aut_e']]
 db3['spr_long'] = (pd.to_datetime(db3['spr_e'])-pd.to_datetime(db3['spr_b'])).dt.days
 db3['aut_long'] = (pd.to_datetime(db3['aut_e'])-pd.to_datetime(db3['aut_b'])).dt.days
 db3['ratio'] = db3['spr_long']/db3['aut_long']
-# print(db3['ratio'])
+
 db3['ratio1'] = db3['ratio'].apply(lambda x: x-1 if x >= 1 else -(1/x-1))
-# print(db3['ratio1'])
+
 plt.bar(db3['ratio1'].index, db3['ratio1'])
 locs, labels = plt.yticks()
 title = "Отношение продолжительности вегетационной весны к вегетационной осени"
@@ -69,6 +63,25 @@ locs1 = np.append(locs, np.array([db3['ratio'].quantile(.25), db3['ratio'].mean(
 labels = np.append(locs.round(0), np.array([r'$q_1$=' + '{:.2f}'.format(db3['ratio'].quantile(.25)), r'$\overline{x}$=' + '{:.2f}'.format(db3['ratio'].mean()), r'$q_3$=' + '{:.2f}'.format(db3['ratio'].quantile(.75))]))
 
 # plt.yticks(locs1, labels, fontsize=10)
+plt.title(title, fontsize=12)
+plt.show()
+var1 = db3['aut_long']
+
+counts, bins, patches  = plt.hist(var1, bins='auto', density=0, alpha=0.6, color='gray', edgecolor="black")
+title = "Гистограмма распределения продолжительности вегетационной осени с 1967 по 2020 гг. "
+plt.axvline(linewidth=2.5, x=var1.quantile(.25), color='r')
+plt.axvline(linewidth=2.5, x=var1.quantile(.75), color='r')
+plt.axvline(linewidth=2.5, x=var1.mean(), color='blue')
+plt.grid(axis = 'y', color='black', linewidth=0)
+bins1 = np.append(bins, np.array([var1.quantile(.25), var1.mean(), var1.quantile(.75)]))
+bins2 = np.append(bins.round(2), np.array(['\n\n\n' + r'$q_1$=' + '{:.2f}'.format(var1.quantile(.25)), '\n' + '{:.2f}'.format(var1.mean()) + '\n среднее ', '\n\n\n' + r'$q_3$=' + '{:.2f}'.format(var1.quantile(.75))]))
+plt.xticks(bins1, bins2, fontsize=12)
+plt.yticks(np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), np.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]), fontsize=12)
+for i in range(counts.size):
+    plt.text((bins[i + 1] + bins[i])/2, counts[i] + 0.2, str(int(counts[i])), fontsize=12)
+# plt.ylim((0, 20))
+width = bins[counts.size] - bins[0];
+plt.xlim((bins[0] - width/30,  bins[counts.size] + width/30))
 plt.title(title, fontsize=12)
 plt.show()
 
